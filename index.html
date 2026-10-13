@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Still Work — Pocketbook Passport</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;1,9..144,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#12151c; --ink-2:#191d26; --line:#2a2f3b;
+    --paper:#ece4d0; --paper-dim:#c9c0aa;
+    --text:#e9e6dd; --text-dim:#8f96a3;
+    --brass:#c98a3e; --brass-dim:#8a5f2c;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{background:var(--ink);color:var(--text);font-family:'Fraunces',serif;line-height:1.5;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:560px;margin:0 auto;padding:0 24px;}
+  .hero{padding:64px 0 8px;text-align:center;}
+  .kicker{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--brass);letter-spacing:0.02em;margin-bottom:14px;display:block;}
+  h1{font-size:clamp(28px,7vw,42px);font-weight:500;margin:0 0 14px;line-height:1.15;letter-spacing:-0.01em;}
+  .lede{color:var(--text-dim);font-size:16px;max-width:420px;margin:0 auto;font-style:italic;font-weight:300;}
+
+  .counter{text-align:center;padding:40px 0 48px;}
+  .counter-number{
+    font-family:'IBM Plex Mono',monospace;font-weight:500;
+    font-size:clamp(48px,14vw,76px);color:var(--brass);line-height:1;letter-spacing:-0.01em;
+  }
+  .counter-label{
+    font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--text-dim);
+    letter-spacing:0.04em;text-transform:uppercase;margin-top:10px;
+  }
+
+  section{padding:36px 0;border-top:1px solid var(--line);}
+  .section-head{margin-bottom:20px;text-align:center;}
+  .section-head h2{font-size:21px;font-weight:500;margin:0;}
+  .section-head p{color:var(--text-dim);font-size:14px;margin:8px 0 0;}
+
+  form{display:flex;flex-direction:column;gap:12px;max-width:380px;margin:0 auto;}
+  label{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--text-dim);margin-bottom:-6px;}
+  input[type=text], input[type=email]{
+    background:var(--ink-2);border:1px solid var(--line);color:var(--text);
+    padding:11px 12px;font-family:'Fraunces',serif;font-size:15px;border-radius:3px;outline:none;
+  }
+  input:focus{border-color:var(--brass);}
+  button{
+    background:var(--brass);color:#191305;border:none;padding:12px 18px;
+    font-family:'IBM Plex Mono',monospace;font-size:13px;border-radius:3px;cursor:pointer;margin-top:4px;
+  }
+  button:hover{background:#dc9a4c;}
+  button:disabled{background:var(--paper-dim);cursor:default;}
+  button:focus-visible, input:focus-visible{outline:2px solid var(--brass);outline-offset:2px;}
+  .error{font-size:12px;color:#d97757;margin-top:2px;}
+  .visually-hidden{position:absolute;left:-9999px;}
+
+  .passport{
+    background:var(--paper);color:#2a2418;border-radius:4px;padding:22px 24px;
+    max-width:380px;margin:0 auto;position:relative;box-shadow:0 12px 30px rgba(0,0,0,0.35);
+  }
+  .passport .stamp{
+    position:absolute;top:16px;right:16px;border:2px solid var(--brass-dim);color:var(--brass-dim);
+    border-radius:50%;width:64px;height:64px;display:flex;align-items:center;justify-content:center;
+    font-family:'IBM Plex Mono',monospace;font-size:10px;text-align:center;transform:rotate(-12deg);line-height:1.2;
+  }
+  .passport .field-label{font-family:'IBM Plex Mono',monospace;font-size:10px;color:#7a6f57;display:block;}
+  .passport .field-value{font-size:18px;margin:0 0 12px;}
+  .passport .code{font-family:'IBM Plex Mono',monospace;font-size:13px;color:#7a6f57;}
+
+  footer{padding:30px 0 50px;text-align:center;color:var(--text-dim);font-family:'IBM Plex Mono',monospace;font-size:11px;}
+</style>
+</head>
+<body>
+
+<div class="hero wrap">
+  <span class="kicker">STILL WORK — POCKETBOOK PASSPORT</span>
+  <h1>Every pocketbook keeps<br>going after you put it down.</h1>
+  <p class="lede">Register yours — you'll be counted among everyone who's claimed one.</p>
+</div>
+
+<div class="counter">
+  <!-- To update the count: change the number below, save, and redeploy. -->
+  <div class="counter-number" id="counter-number">0</div>
+  <div class="counter-label">pocketbooks registered</div>
+</div>
+
+<div class="wrap">
+
+  <section>
+    <div class="section-head">
+      <h2>Claim your copy.</h2>
+      <p>Just enough to send you first word of new drops and events — nothing else.</p>
+    </div>
+
+    <!-- Netlify finds this form at deploy time (data-netlify + name). -->
+    <form id="register-form" name="pocketbook-registration" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+      <input type="hidden" name="form-name" value="pocketbook-registration">
+      <input type="hidden" name="stamp-id" value="">
+      <p class="visually-hidden"><label>Don't fill this out: <input name="bot-field"></label></p>
+      <label for="reg-name">Name</label>
+      <input type="text" id="reg-name" name="name" required autocomplete="name">
+      <label for="reg-email">Email</label>
+      <input type="email" id="reg-email" name="email" required autocomplete="email">
+      <button type="submit">Stamp my pocketbook</button>
+      <div class="error" id="reg-error"></div>
+    </form>
+
+    <div id="passport-holder" style="margin-top:20px;"></div>
+  </section>
+
+</div>
+
+<footer>still work · stillwork.club</footer>
+
+<script>
+(function(){
+
+  function escapeHtml(s){ const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+
+  function makeStampId(){
+    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+    let out = 'SW-';
+    for (let i=0;i<5;i++) out += chars[Math.floor(Math.random()*chars.length)];
+    return out;
+  }
+
+  function getLocalProfile(){
+    try { const raw = localStorage.getItem('sw-pocketbook'); return raw ? JSON.parse(raw) : null; }
+    catch(e){ return null; }
+  }
+  function setLocalProfile(profile){
+    try { localStorage.setItem('sw-pocketbook', JSON.stringify(profile)); } catch(e){}
+  }
+
+  const form = document.getElementById('register-form');
+  const holder = document.getElementById('passport-holder');
+
+  function renderPassport(profile){
+    holder.innerHTML =
+      '<div class="passport">' +
+        '<span class="field-label">registered to</span>' +
+        '<p class="field-value">' + escapeHtml(profile.name) + '</p>' +
+        '<span class="code">' + profile.stampId + '</span>' +
+        '<div class="stamp">STILL<br>WORK<br>' + profile.stampId.slice(-4) + '</div>' +
+      '</div>';
+    form.style.display = 'none';
+  }
+
+  function encode(data){
+    return Object.keys(data).map(function(k){
+      return encodeURIComponent(k) + '=' + encodeURIComponent(data[k]);
+    }).join('&');
+  }
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    const errEl = document.getElementById('reg-error');
+    const btn = form.querySelector('button');
+    errEl.textContent = '';
+
+    const name = document.getElementById('reg-name').value.trim();
+    const email = document.getElementById('reg-email').value.trim();
+    if (!name || !email){ errEl.textContent = 'Fill in both fields.'; return; }
+
+    btn.disabled = true;
+    const stampId = makeStampId();
+
+    fetch('/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: encode({ 'form-name': 'pocketbook-registration', name: name, email: email, 'stamp-id': stampId })
+    }).then(function(resp){
+      if (!resp.ok) throw new Error('submit failed');
+      const profile = { name: name, stampId: stampId };
+      setLocalProfile(profile);
+      renderPassport(profile);
+    }).catch(function(){
+      errEl.textContent = 'Could not save that — try again.';
+    }).then(function(){
+      btn.disabled = false;
+    });
+  });
+
+  const saved = getLocalProfile();
+  if (saved) renderPassport(saved);
+
+})();
+</script>
+
+</body>
+</html>
